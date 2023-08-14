@@ -1,0 +1,4 @@
+[tasks.dev]
+command = "cargo"
+args = ["watch", "-x", "run --profile dev"]
+env_files = [".env"]
