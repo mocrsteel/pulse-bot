@@ -1,22 +1,13 @@
-use std::collections::HashMap;
-use std::fs::File;
-use std::io::prelude::*;
-
 use poise::Event;
-use serde_json::to_string;
-use serenity::async_trait;
-use serenity::http::Http;
-use serenity::model::gateway::Ready;
 use serenity::prelude::*;
 
-mod commands;
-mod globals;
-mod structs;
-
-use globals::{DISCORD_TOKEN, GUILD_ID};
+use pulse_bot::commands::channels;
+use pulse_bot::globals::DISCORD_TOKEN;
+use pulse_bot::structs::user;
 
 #[tokio::main]
 async fn main() {
+    // Just some code to extract structs from Serenity to get an idea on content and structure.
     // async fn get_info() {
     //     let http = Http::new(&DISCORD_TOKEN);
 
@@ -44,7 +35,7 @@ async fn main() {
 
     let framework = poise::Framework::builder()
         .options(poise::FrameworkOptions {
-            commands: vec![commands::age(), commands::create_channel()],
+            commands: vec![channels::age(), channels::create_channel()],
             event_handler: |_ctx, event, _framework, _data| {
                 Box::pin(async move {
                     if let Event::Ready { data_about_bot } = event {
@@ -62,7 +53,7 @@ async fn main() {
         .setup(|ctx, _ready, framework| {
             Box::pin(async move {
                 poise::builtins::register_globally(ctx, &framework.options().commands).await?;
-                Ok(structs::Data {})
+                Ok(user::Data {})
             })
         });
 
